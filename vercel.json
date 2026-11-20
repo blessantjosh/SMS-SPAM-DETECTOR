@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "cybersentinel-ai",
+  "builds": [
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "cybersentinel-dashboard/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/cybersentinel-dashboard/browser"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/main.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "cybersentinel-dashboard/$1"
+    }
+  ],
+  "env": {
+    "PYTHONPATH": "./src"
+  },
+  "build": {
+    "env": {
+      "PYTHONPATH": "./src"
+    }
+  }
+}
