@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "cybersentinel-frontend",
+  "buildCommand": "cd cybersentinel-dashboard && npm install && npm run build",
+  "outputDirectory": "cybersentinel-dashboard/dist/cybersentinel-dashboard/browser",
+  "framework": "angular",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "API_URL": "https://your-backend-url.railway.app/api"
+  }
+}
