@@ -1,0 +1,14 @@
+Test Message 1 (Scam - KYC):
+"Your KYC is incomplete. Update now at bit.ly/kyc123 or your account will be suspended."
+
+Test Message 2 (Scam - OTP):
+"Share OTP 8234 to verify your identity for prize claim."
+
+Test Message 3 (Scam - UPI):
+"You have received Rs 50000 in your account. Confirm with UPI PIN."
+
+Test Message 4 (Legitimate):
+"Your OTP for login is 4567. Valid for 10 minutes. Do not share."
+
+Test Message 5 (Legitimate):
+"Dear customer, your electricity bill of Rs 1200 is due on 25th Nov."

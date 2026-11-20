@@ -1,0 +1,278 @@
+<div class="min-h-screen relative overflow-hidden">
+  <!-- Animated Wave Background -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-br from-cyber-navy via-cyber-darkNavy to-black"></div>
+    <div class="absolute bottom-0 left-0 w-full h-96 opacity-30">
+      <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="url(#wave-gradient)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,112C960,117,1056,139,1152,138.7C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" class="animate-pulse-slow"></path>
+        <defs>
+          <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:0.3" />
+            <stop offset="50%" style="stop-color:#14b8a6;stop-opacity:0.2" />
+            <stop offset="100%" style="stop-color:#00d9ff;stop-opacity:0.3" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="relative z-10 p-6 max-w-7xl mx-auto">
+    <!-- Hero Section - Circular Stats -->
+    <div class="mb-12 mt-8">
+      <div class="relative">
+        <!-- Main Circular Gauge -->
+        <div class="flex justify-center mb-8">
+          <div class="relative">
+            <!-- Glowing Shield Background -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-64 h-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 blur-3xl animate-pulse-slow"></div>
+            </div>
+
+            <!-- Circular Progress -->
+            <div class="relative">
+              <svg class="w-80 h-80 transform -rotate-90">
+                <circle cx="160" cy="160" r="140" stroke="#1e293b" stroke-width="20" fill="none" />
+                <circle cx="160" cy="160" r="140"
+                        [attr.stroke-dasharray]="879.6"
+                        [attr.stroke-dashoffset]="879.6 * (1 - (totalAnalyzed / 200))"
+                        stroke="url(#gradient)"
+                        stroke-width="20"
+                        fill="none"
+                        stroke-linecap="round"
+                        class="transition-all duration-1000" />
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#00d9ff" />
+                    <stop offset="100%" style="stop-color:#14b8a6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              <!-- Center Content -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-cyan-400 to-teal-400 flex items-center justify-center shadow-lg shadow-cyan-400/50">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                  </svg>
+                </div>
+                <div *ngIf="loading" class="text-center">
+                  <div class="text-3xl font-bold text-white animate-pulse">Loading...</div>
+                </div>
+                <div *ngIf="!loading" class="text-center">
+                  <div class="text-5xl font-bold text-white mb-2">{{ totalAnalyzed }}</div>
+                  <div class="text-sm text-gray-400">Total SMS Scanned</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Level Indicators -->
+        <div class="grid grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <!-- Critical (High Risk) -->
+          <div class="text-center">
+            <div class="relative inline-block mb-3">
+              <svg class="w-32 h-20">
+                <path d="M 10 60 Q 64 10, 118 60"
+                      stroke="#1e293b"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"/>
+                <path d="M 10 60 Q 64 10, 118 60"
+                      [attr.stroke-dasharray]="170"
+                      [attr.stroke-dashoffset]="170 * (1 - 0.1)"
+                      stroke="#ef4444"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"
+                      class="transition-all duration-1000"/>
+              </svg>
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
+                <div class="text-2xl font-bold text-red-400">0</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Critical</div>
+          </div>
+
+          <!-- Spam Detected -->
+          <div class="text-center">
+            <div class="relative inline-block mb-3">
+              <svg class="w-32 h-20">
+                <path d="M 10 60 Q 64 10, 118 60"
+                      stroke="#1e293b"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"/>
+                <path d="M 10 60 Q 64 10, 118 60"
+                      [attr.stroke-dasharray]="170"
+                      [attr.stroke-dashoffset]="170 * (1 - (scamPercentage / 100))"
+                      stroke="#f59e0b"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"
+                      class="transition-all duration-1000"/>
+              </svg>
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
+                <div class="text-2xl font-bold text-yellow-400">{{ scamDetected }}</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Spam Detected</div>
+          </div>
+
+          <!-- Safe -->
+          <div class="text-center">
+            <div class="relative inline-block mb-3">
+              <svg class="w-32 h-20">
+                <path d="M 10 60 Q 64 10, 118 60"
+                      stroke="#1e293b"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"/>
+                <path d="M 10 60 Q 64 10, 118 60"
+                      [attr.stroke-dasharray]="170"
+                      [attr.stroke-dashoffset]="170 * (1 - (hamPercentage / 100))"
+                      stroke="#10b981"
+                      stroke-width="12"
+                      fill="none"
+                      stroke-linecap="round"
+                      class="transition-all duration-1000"/>
+              </svg>
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
+                <div class="text-2xl font-bold text-green-400">{{ legitimateDetected }}</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Safe Messages</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load/Refresh Dashboard Button -->
+    <div class="flex justify-center mb-8" *ngIf="!dataLoaded && !loading">
+      <button (click)="loadData()"
+              class="group relative px-16 py-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-bold text-xl shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 transition-all duration-300 transform hover:scale-105 animate-pulse">
+        <span class="flex items-center gap-3">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          Load Dashboard
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+      <!-- Refresh Button (shows after data loaded) -->
+      <button *ngIf="dataLoaded" (click)="refreshData()"
+              [disabled]="loading"
+              class="group relative px-8 py-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-bold text-lg shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span class="flex items-center gap-3">
+          <svg [class]="loading ? 'w-6 h-6 animate-spin' : 'w-6 h-6'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          {{ loading ? 'Refreshing...' : 'Refresh Dashboard' }}
+        </span>
+      </button>
+
+      <button routerLink="/sms-detection"
+              class="group relative px-12 py-5 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full text-white font-bold text-lg shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 transform hover:scale-105">
+        <span class="flex items-center gap-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Scan Message Now
+          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </span>
+      </button>
+
+      <button routerLink="/model-performance"
+              class="group relative px-8 py-5 bg-white/5 backdrop-blur border border-white/20 rounded-full text-white font-bold text-lg hover:bg-white/10 hover:border-cyan-400/50 transition-all duration-300 transform hover:scale-105">
+        <span class="flex items-center gap-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          View Performance
+          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <!-- Statistical Summary Cards -->
+    <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-8 mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-white">Statistical Summary</h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Daily Scanned -->
+        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+              <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-gray-400 text-sm">Daily Scanned</div>
+              <div class="text-gray-500 text-xs">Today</div>
+            </div>
+          </div>
+          <div class="text-2xl font-bold text-cyan-400">{{ totalAnalyzed }}</div>
+        </div>
+
+        <!-- Spam Detected -->
+        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-gray-400 text-sm">Spam Detected</div>
+              <div class="text-gray-500 text-xs">Blocked automatically</div>
+            </div>
+          </div>
+          <div class="text-2xl font-bold text-red-400">{{ scamDetected }}</div>
+        </div>
+
+        <!-- Safe Messages -->
+        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-gray-400 text-sm">Safe Messages</div>
+              <div class="text-gray-500 text-xs">Verified legitimate</div>
+            </div>
+          </div>
+          <div class="text-2xl font-bold text-green-400">{{ legitimateDetected }}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div>
+          <h3 class="text-lg font-semibold text-red-400 mb-1">Service Unavailable</h3>
+          <p class="text-gray-300 text-sm">{{ error }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

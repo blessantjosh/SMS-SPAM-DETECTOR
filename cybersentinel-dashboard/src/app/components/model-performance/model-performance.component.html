@@ -1,0 +1,222 @@
+<div class="min-h-screen relative overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-cyber-navy via-cyber-darkNavy to-black"></div>
+
+  <!-- Wave Background -->
+  <div class="absolute bottom-0 left-0 w-full h-96 opacity-20">
+    <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="url(#wave-gradient)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,112C960,117,1056,139,1152,138.7C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      <defs>
+        <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:0.3" />
+          <stop offset="50%" style="stop-color:#14b8a6;stop-opacity:0.2" />
+          <stop offset="100%" style="stop-color:#00d9ff;stop-opacity:0.3" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="relative z-10 p-6 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <button routerLink="/" class="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors mb-4">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back
+      </button>
+      <h1 class="text-4xl font-bold text-white mb-2">Model Performance</h1>
+      <p class="text-gray-400">Machine learning model metrics and evaluation</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let i of [1,2,3,4,5,6]" class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-6 h-32 animate-pulse"></div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6 mb-6">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div>
+          <h3 class="text-lg font-semibold text-red-400 mb-1">Failed to Load</h3>
+          <p class="text-gray-300 text-sm">{{ error }}</p>
+          <button (click)="loadPerformance()" class="mt-4 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 text-sm transition-colors">
+            Retry
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div *ngIf="performance && !loading" class="space-y-6">
+      <!-- Model Info Card -->
+      <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg shadow-cyan-500/50">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">{{ performance.model_name }}</h2>
+            <p class="text-gray-400">Current Active Model</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Metrics Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Overall Accuracy -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-400 mb-1">Overall Accuracy</div>
+              <div [class]="'text-3xl font-bold ' + getPerformanceColor(performance.test_accuracy)">
+                {{ formatPercentage(performance.test_accuracy) }}
+              </div>
+            </div>
+            <div [class]="'w-12 h-12 rounded-xl flex items-center justify-center ' + getPerformanceBgColor(performance.test_accuracy)">
+              <svg [class]="'w-6 h-6 ' + getPerformanceColor(performance.test_accuracy)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div [class]="'h-full rounded-full transition-all duration-1000 ' + (performance.test_accuracy >= 0.9 ? 'bg-gradient-to-r from-green-500 to-green-400' : performance.test_accuracy >= 0.7 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 'bg-gradient-to-r from-red-500 to-red-400')"
+                 [style.width.%]="performance.test_accuracy * 100"></div>
+          </div>
+        </div>
+
+        <!-- Macro F1 Score -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-400 mb-1">Macro F1 Score</div>
+              <div [class]="'text-3xl font-bold ' + getPerformanceColor(performance.macro_f1)">
+                {{ formatPercentage(performance.macro_f1) }}
+              </div>
+            </div>
+            <div [class]="'w-12 h-12 rounded-xl flex items-center justify-center ' + getPerformanceBgColor(performance.macro_f1)">
+              <svg [class]="'w-6 h-6 ' + getPerformanceColor(performance.macro_f1)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div [class]="'h-full rounded-full transition-all duration-1000 ' + (performance.macro_f1 >= 0.9 ? 'bg-gradient-to-r from-green-500 to-green-400' : performance.macro_f1 >= 0.7 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 'bg-gradient-to-r from-red-500 to-red-400')"
+                 [style.width.%]="performance.macro_f1 * 100"></div>
+          </div>
+        </div>
+
+        <!-- False Positive Rate -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-400 mb-1">False Positive Rate</div>
+              <div [class]="'text-3xl font-bold ' + getPerformanceColor(performance.false_positive_rate, true)">
+                {{ formatPercentage(performance.false_positive_rate) }}
+              </div>
+            </div>
+            <div [class]="'w-12 h-12 rounded-xl flex items-center justify-center ' + getPerformanceBgColor(performance.false_positive_rate, true)">
+              <svg [class]="'w-6 h-6 ' + getPerformanceColor(performance.false_positive_rate, true)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div [class]="'h-full rounded-full transition-all duration-1000 ' + (performance.false_positive_rate <= 0.05 ? 'bg-gradient-to-r from-green-500 to-green-400' : performance.false_positive_rate <= 0.1 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 'bg-gradient-to-r from-red-500 to-red-400')"
+                 [style.width.%]="performance.false_positive_rate * 100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scam Detection Metrics -->
+      <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-8">
+        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          Scam Detection Performance
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- F1 Score for Scam -->
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+            <div class="text-sm text-gray-400 mb-2">F1 Score</div>
+            <div [class]="'text-2xl font-bold mb-3 ' + getPerformanceColor(performance.f1_scam)">
+              {{ formatPercentage(performance.f1_scam) }}
+            </div>
+            <div class="text-xs text-gray-500">Harmonic mean of precision & recall</div>
+          </div>
+
+          <!-- Precision for Scam -->
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+            <div class="text-sm text-gray-400 mb-2">Precision</div>
+            <div [class]="'text-2xl font-bold mb-3 ' + getPerformanceColor(performance.precision_scam)">
+              {{ formatPercentage(performance.precision_scam) }}
+            </div>
+            <div class="text-xs text-gray-500">Accuracy of scam predictions</div>
+          </div>
+
+          <!-- Recall for Scam -->
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+            <div class="text-sm text-gray-400 mb-2">Recall</div>
+            <div [class]="'text-2xl font-bold mb-3 ' + getPerformanceColor(performance.recall_scam)">
+              {{ formatPercentage(performance.recall_scam) }}
+            </div>
+            <div class="text-xs text-gray-500">Percentage of scams detected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legitimate Message Metrics -->
+      <div class="bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 p-8">
+        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Legitimate Message Performance
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- F1 Score for Ham -->
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+            <div class="text-sm text-gray-400 mb-2">F1 Score (Ham)</div>
+            <div [class]="'text-2xl font-bold mb-3 ' + getPerformanceColor(performance.f1_ham)">
+              {{ formatPercentage(performance.f1_ham) }}
+            </div>
+            <div class="text-xs text-gray-500">Overall performance for legitimate messages</div>
+          </div>
+
+          <!-- False Negative Rate -->
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+            <div class="text-sm text-gray-400 mb-2">False Negative Rate</div>
+            <div [class]="'text-2xl font-bold mb-3 ' + getPerformanceColor(performance.false_negative_rate, true)">
+              {{ formatPercentage(performance.false_negative_rate) }}
+            </div>
+            <div class="text-xs text-gray-500">Scams missed by the model</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Banner -->
+      <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl p-6">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <h3 class="text-lg font-semibold text-cyan-400 mb-1">About These Metrics</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              These metrics are calculated from the test dataset and represent the model's performance on unseen data.
+              Higher F1, precision, and recall scores indicate better performance, while lower false positive and false negative rates are desired.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

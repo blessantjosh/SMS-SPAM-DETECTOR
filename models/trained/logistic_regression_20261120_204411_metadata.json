@@ -1,0 +1,72 @@
+{
+  "model_name": "logistic_regression",
+  "selection_details": {
+    "selected_model": "logistic_regression",
+    "selection_metric": "val_macro_f1",
+    "stability_weight": 0.3,
+    "all_scores": {
+      "logistic_regression": {
+        "primary_score": 0.9269056232708716,
+        "stability_penalty": 0.060772715808261615,
+        "combined_score": 0.9086738085283931,
+        "val_f1_scam": 0.9855572782877747,
+        "val_recall_scam": 1.0,
+        "val_precision_scam": 0.9717845863433404,
+        "val_f1_ham": 0.8682539682539683,
+        "val_recall_ham": 0.7840909090909091,
+        "val_macro_f1": 0.9269056232708716,
+        "val_accuracy": 0.9739761604515702
+      },
+      "linear_svm": {
+        "primary_score": 0.8895512666345999,
+        "stability_penalty": 0.11421837735859153,
+        "combined_score": 0.8552857534270225,
+        "val_f1_scam": 0.9715628507295173,
+        "val_recall_scam": 0.9734375,
+        "val_precision_scam": 0.9702955642318487,
+        "val_f1_ham": 0.8075396825396826,
+        "val_recall_ham": 0.7840909090909091,
+        "val_macro_f1": 0.8895512666345999,
+        "val_accuracy": 0.9506245120999219
+      },
+      "lightgbm": {
+        "primary_score": 0.7777634918976724,
+        "stability_penalty": 0.10241932925017959,
+        "combined_score": 0.7470376931226185,
+        "val_f1_scam": 0.9326712198681522,
+        "val_recall_scam": 0.9098020186335404,
+        "val_precision_scam": 0.9589957757296467,
+        "val_f1_ham": 0.6228557639271926,
+        "val_recall_ham": 0.7159090909090908,
+        "val_macro_f1": 0.7777634918976724,
+        "val_accuracy": 0.8863342941211794
+      }
+    },
+    "best_scores": {
+      "primary_score": 0.9269056232708716,
+      "stability_penalty": 0.060772715808261615,
+      "combined_score": 0.9086738085283931,
+      "val_f1_scam": 0.9855572782877747,
+      "val_recall_scam": 1.0,
+      "val_precision_scam": 0.9717845863433404,
+      "val_f1_ham": 0.8682539682539683,
+      "val_recall_ham": 0.7840909090909091,
+      "val_macro_f1": 0.9269056232708716,
+      "val_accuracy": 0.9739761604515702
+    }
+  },
+  "cv_results": {
+    "val_macro_f1": 0.9269056232708716,
+    "val_f1_scam": 0.9855572782877747,
+    "val_f1_ham": 0.8682539682539683
+  },
+  "test_results": {
+    "macro_f1": 0.8500411974732216,
+    "f1_scam": 0.972809667673716,
+    "f1_ham": 0.7272727272727273,
+    "accuracy": 0.9505494505494505
+  },
+  "training_samples": 730,
+  "test_samples": 182,
+  "feature_count": 2965
+}

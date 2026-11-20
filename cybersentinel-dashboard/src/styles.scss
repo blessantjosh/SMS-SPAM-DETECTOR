@@ -1,0 +1,104 @@
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply m-0 p-0 text-gray-100 font-sans;
+    background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1f3a 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+/* Custom Components */
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-lg rounded-xl border border-white/10;
+  }
+
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/10 hover:border-white/20 transition-all duration-300;
+  }
+
+  .neon-border {
+    @apply border-2 border-cyber-blue/50 shadow-neon-blue;
+  }
+
+  .neon-text {
+    @apply text-cyber-blue drop-shadow-[0_0_10px_rgba(0,243,255,0.5)];
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyber-blue via-neon-purple to-cyber-purple bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-cyber-blue to-cyber-purple
+           hover:from-cyber-purple hover:to-cyber-blue
+           text-white font-semibold rounded-lg
+           shadow-lg hover:shadow-neon-blue
+           transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 glass-card border border-cyber-blue/50
+           hover:bg-cyber-blue/10 hover:border-cyber-blue
+           text-cyber-blue font-semibold rounded-lg
+           transition-all duration-300;
+  }
+
+  .input-cyber {
+    @apply w-full px-4 py-3 glass-card border border-white/10
+           focus:border-cyber-blue focus:ring-2 focus:ring-cyber-blue/50
+           text-white placeholder-gray-400 rounded-lg
+           transition-all duration-300;
+  }
+
+  .stat-card {
+    @apply glass-card p-6 hover:bg-white/10 transition-all duration-300
+           border-l-4 border-cyber-blue;
+  }
+
+  .threat-indicator-low {
+    @apply text-green-400 bg-green-400/10 border-green-400/30;
+  }
+
+  .threat-indicator-medium {
+    @apply text-yellow-400 bg-yellow-400/10 border-yellow-400/30;
+  }
+
+  .threat-indicator-high {
+    @apply text-red-400 bg-red-400/10 border-red-400/30;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cyber-darker;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-cyber-blue/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-cyber-blue/50;
+}

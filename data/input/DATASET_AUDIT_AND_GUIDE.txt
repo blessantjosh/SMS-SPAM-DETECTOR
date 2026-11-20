@@ -1,0 +1,95 @@
+CyberSentinel AI - SMS Dataset Improvement v1
+================================================
+
+Source file: synthetic_india_only-overall.csv
+
+WHAT WAS DONE
+-------------
+1. Preserved original SMS wording; only normalized whitespace and trimmed fields.
+2. Normalized label/category/language casing and surrounding whitespace.
+3. Checked missing values and empty messages.
+4. Removed exact duplicate rows and exact duplicate SMS texts if present.
+5. Created stable record IDs.
+6. Created a template-aware 80/20-style train/test split using
+   StratifiedGroupKFold (5 folds, random_state=42).
+7. Kept normalized template groups entirely within one fold to reduce
+   near-duplicate/template leakage between training and test data.
+8. Created a five-fold group manifest for grouped cross-validation.
+
+DATASET COUNTS
+--------------
+Total records: 912
+Training records (folds 1-4): 730
+Held-out test records (fold 0): 182
+Unique normalized template groups: 470
+Repeated template groups: 64
+Rows belonging to repeated template groups: 506
+Messages with URL-like patterns: 170
+Messages with Indian mobile-number-like patterns: 292
+
+LABEL COUNTS
+------------
+scam    804
+ham     108
+
+TRAIN LABEL COUNTS
+------------------
+label
+scam    643
+ham      87
+
+TEST LABEL COUNTS
+----------------
+label
+scam    161
+ham      21
+
+CATEGORY COUNTS
+---------------
+legitimate           108
+lottery_prize        105
+electricity_scam     105
+delivery_scam        105
+job_scam             105
+loan_scam            105
+kyc_fraud            105
+otp_theft             87
+upi_payment_fraud     87
+
+LANGUAGE COUNTS
+---------------
+en          423
+hinglish    247
+tanglish    242
+
+IMPORTANT LIMITATIONS
+---------------------
+- All source records are marked synthetic_in. This is not independently
+  verified real-world SMS data.
+- Dataset size and class imbalance remain unchanged; no synthetic records
+  were invented or added during this cleaning step.
+- Category is target-related metadata: do NOT use category as an input
+  feature when predicting label, because legitimate category maps to ham
+  and the other categories map to scam.
+- record_id, source, and template_group_id/fold are metadata, not model
+  input features.
+- Use text and carefully selected non-leaking features as model inputs.
+- Fit text vectorizers, tokenizers, feature scalers and resampling steps
+  on training data only. Never fit them on the full dataset before splitting.
+- Apply class weighting or resampling only within training folds.
+- Keep the held-out test set untouched until final evaluation.
+- Report precision, recall, F1, confusion matrix and false-positive/negative
+  rates; do not rely on accuracy alone.
+- This dataset alone cannot train network intrusion or standalone URL
+  detection models.
+- No dataset can guarantee zero overfitting, underfitting or prediction errors.
+  These must be assessed through grouped cross-validation, learning curves,
+  regularization, error analysis and independent external testing.
+
+RECOMMENDED MODEL INPUT
+-----------------------
+Primary input: text
+Optional language-aware analysis: language (only if available at inference
+time and validated without leakage).
+Do not feed label, category, source, record_id, fold or template_group_id
+into the classifier.

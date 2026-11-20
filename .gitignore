@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (don't commit datasets)
+data/input/*.csv
+data/processed/*.csv
+data/external/**
+
+# But keep the directory structure
+!data/input/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Trained models (too large for git)
+models/trained/*.joblib
+models/trained/*.pkl
+models/evaluation/**
+
+# Reports and outputs
+reports/**/*.csv
+reports/**/*.png
+reports/**/*.txt
+reports/**/*.json
+
+# But keep directory structure
+!reports/**/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Sensitive files
+.env
+*.key
+credentials.json
+.claude/settings.local.json
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Angular / Node.js
+node_modules/
+cybersentinel-dashboard/node_modules/
+cybersentinel-dashboard/dist/
+cybersentinel-dashboard/.angular/
+cybersentinel-dashboard/.cache/
+*.pid
+
+# Frontend build files
+frontend*.log
+backend.pid
+frontend.pid
